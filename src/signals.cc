@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <limits.h>
 
 using namespace v8;
 using namespace node;
@@ -34,9 +35,18 @@ typedef enum ENDIANESS
     ENDIANESS_INTEL
 } ENDIANESS;
 
-//-----------------------------------------------------------------------------------------
-// _signals.* methods
+// Bitwise right rotation
+static inline uint64_t rotr64(uint64_t val, uint64_t shift)
+{
+    const unsigned uint64_t mask = (CHAR_BIT*sizeof(n) - 1);
 
+    shift &= mask;
+    return (n>>shift) | (n<<( (-shift)&mask ));
+}
+
+//-----------------------------------------------------------------------------------------
+
+// _signals.* methods
 static u_int64_t _getvalue(u_int8_t * data,
                            u_int32_t offset,
                            u_int32_t length,
@@ -59,7 +69,7 @@ static u_int64_t _getvalue(u_int8_t * data,
         shift = 64 - offset - length;
     }
 
-    o = (d >> shift) & m;
+    o = rotr64(d, shift) & m;
 
 #ifdef KAYAK_DATA_CHECK
     size_t i;
