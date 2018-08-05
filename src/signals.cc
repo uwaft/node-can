@@ -38,10 +38,10 @@ typedef enum ENDIANESS
 // Bitwise right rotation
 static inline uint64_t rotr64(uint64_t val, uint64_t shift)
 {
-    const unsigned uint64_t mask = (CHAR_BIT*sizeof(n) - 1);
+    const uint64_t mask = (CHAR_BIT*sizeof(n) - 1);
 
     shift &= mask;
-    return (n>>shift) | (n<<( (-shift)&mask ));
+    return (val>>shift) | (val<<( (-shift)&mask ));
 }
 
 //-----------------------------------------------------------------------------------------
